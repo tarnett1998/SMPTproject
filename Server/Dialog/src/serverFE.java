@@ -1,0 +1,65 @@
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import javax.swing.text.*;
+
+public class serverFE extends JFrame implements ActionListener {
+
+
+    private JButton initiate = new JButton("Start");
+
+    private JTextArea log = new JTextArea(20, 30);
+
+    private ServerThread sthread = null;
+
+    private serverFE() {
+
+        this.setLocationRelativeTo(null);
+        this.setTitle("Server Placeholder");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setSize(500,500);
+
+        JPanel north = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel mid = new JPanel();
+
+        DefaultCaret caret = (DefaultCaret)log.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+        north.add(initiate);
+        this.add(north, BorderLayout.NORTH);
+
+        mid.add(new JScrollPane(log));
+        this.add(mid, BorderLayout.CENTER);
+
+        log.setEditable(false);
+
+        initiate.addActionListener(this);
+
+        this.pack();
+        this.setVisible(true);
+
+    }
+
+    public static void main(String[] args) {
+        new serverFE();
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        switch(ae.getActionCommand()) {
+            case "Start":
+                sthread = new ServerThread(log);
+                sthread.start();
+                initiate.setText("Stop");
+                break;
+
+            case "Stop":
+                sthread.kill();
+                initiate.setText("Start");
+                break;
+        }
+    }
+
+}
