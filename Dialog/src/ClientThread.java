@@ -57,6 +57,7 @@ public class ClientThread extends Thread {
                                     data += br.readLine() + "\n";
                                 } catch(Exception e) {break;}
                             }
+                            break;
                         default:
                             dos.writeUTF("ERROR: Unrecognized Command: " + str);
                             dos.flush();

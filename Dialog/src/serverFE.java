@@ -1,9 +1,8 @@
+import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 
 public class serverFE extends JFrame implements ActionListener {
 
@@ -67,7 +66,6 @@ public class serverFE extends JFrame implements ActionListener {
         switch(ae.getActionCommand()) {
             case "Start":
                 sthread = new ServerThread(log);
-                ed = new EncryptDecrypt(log.getText(), log);
                 sthread.start();
                 initiate.setText("Stop");
                 break;
