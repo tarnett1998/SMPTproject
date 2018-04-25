@@ -1,21 +1,24 @@
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.DefaultCaret;
 
 public class serverFE extends JFrame implements ActionListener {
 
 
     private JButton initiate = new JButton("Start");
 
-    private JTextArea log = new JTextArea(20, 30);
+    private JTextArea log = new JTextArea(20, 65);
 
     private ServerThread sthread = null;
 
+    private EncryptDecrypt ed;
+
     private serverFE() {
+
+        Font font = new FontHandler().setFont1();
 
         this.setLocationRelativeTo(null);
         this.setTitle("Server Placeholder");
@@ -31,10 +34,23 @@ public class serverFE extends JFrame implements ActionListener {
         north.add(initiate);
         this.add(north, BorderLayout.NORTH);
 
-        mid.add(new JScrollPane(log));
+        JScrollPane jsp = new JScrollPane(log);
+        mid.add(jsp);
+        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(mid, BorderLayout.CENTER);
+/*
+        log.setEditable(false);*/
 
-        log.setEditable(false);
+        log.setFont(font);
+        initiate.setFont(font);
+        initiate.setBackground(new Color(34,34,34));
+        north.setBackground(new Color(54,54,54));
+        mid.setBackground(new Color(54,54,54));
+        log.setBackground(new Color(34,34,34));
+        log.setForeground(new Color(221,221,221));
+        initiate.setForeground(new Color(221,221,221));
+        log.setLineWrap(true);
+        log.setWrapStyleWord(true);
 
         initiate.addActionListener(this);
 
@@ -51,6 +67,7 @@ public class serverFE extends JFrame implements ActionListener {
         switch(ae.getActionCommand()) {
             case "Start":
                 sthread = new ServerThread(log);
+                ed = new EncryptDecrypt(log.getText(), log);
                 sthread.start();
                 initiate.setText("Stop");
                 break;

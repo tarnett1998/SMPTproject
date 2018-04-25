@@ -36,7 +36,6 @@ public class ServerThread extends Thread {
         try {
             servSock.close();
             clientSocket.close();
-            return;
         } catch (Exception e) {
             log.append("Exception (ServerThread[2]): " + e + "\n");
         }

@@ -31,6 +31,7 @@ public class ClientThread extends Thread {
                     str = dirArray[0].toUpperCase();
                     switch (str) {
                         case "HELO":
+                            new HeloHandler(clientSocket, log);
                             break;
                         default:
                             dos.writeUTF("ERROR: Unrecognized Command: " + dirArray[0]);
