@@ -17,8 +17,8 @@ public class clientFE extends JFrame implements ActionListener {
     private JTextArea jtaLog = new JTextArea();
     private JScrollPane jspLog = new JScrollPane(jtaLog);
 
-    public DataInputStream in = null;
-    public DataOutputStream out = null;
+    private BufferedReader br = null;
+    private BufferedWriter bw = null;
     public Socket s = null;
    /*
       main method starts here, sole purpose is to call/create new of the FileClient constructor below.
@@ -86,11 +86,10 @@ public class clientFE extends JFrame implements ActionListener {
                 s = new Socket(jtfServer.getText(),42069);
 //                in = new DataInputStream(s.getInputStream());
 //                out = new DataOutputStream(s.getOutputStream());
-                BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-                bw.write("HELO");
-                bw.flush();
-                jtaLog.append(br.readLine());
+                br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+                while(true) {bw.write("HELO");bw.flush();jtaLog.append(br.readLine());}
+                
             }
             //if it fails to find the server, throw unknown host exception to log
             catch(UnknownHostException uhe) {
@@ -107,9 +106,8 @@ public class clientFE extends JFrame implements ActionListener {
         public void doDisconnect(){
             //trys to close the socket and streams
             try{
-                s.close();
-                in.close();
-                out.close();
+                br.close();
+                bw.close();
                 //when it does, it throws exception and prints that it worked
             }catch(Exception e){
                 jtaLog.append("Server disconnected.");
