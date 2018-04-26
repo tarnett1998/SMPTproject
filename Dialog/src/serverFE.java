@@ -13,6 +13,8 @@ public class serverFE extends JFrame implements ActionListener {
 
     private ServerThread sthread = null;
 
+    private JTextField jtfcc = new JTextField(10);
+
     private EncryptDecrypt ed;
 
     private serverFE() {
@@ -30,6 +32,9 @@ public class serverFE extends JFrame implements ActionListener {
         DefaultCaret caret = (DefaultCaret)log.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
+        JLabel jlcc = new JLabel("Clients Connected: ");
+        north.add(jlcc);
+        north.add(jtfcc);
         north.add(initiate);
         this.add(north, BorderLayout.NORTH);
 
@@ -56,6 +61,8 @@ public class serverFE extends JFrame implements ActionListener {
         this.pack();
         this.setVisible(true);
 
+        jtfcc.setText("0");
+
     }
 
     public static void main(String[] args) {
@@ -68,6 +75,7 @@ public class serverFE extends JFrame implements ActionListener {
                 sthread = new ServerThread(log);
                 sthread.start();
                 initiate.setText("Stop");
+                jtfcc.setText("" + sthread.ccon);
                 break;
 
             case "Stop":

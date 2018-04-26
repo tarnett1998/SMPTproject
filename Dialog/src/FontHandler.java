@@ -8,7 +8,7 @@ class FontHandler {
     FontHandler() {
 
         try {
-            font1 = Font.createFont( Font.TRUETYPE_FONT, new FileInputStream("C:\\Users\\norseman\\IdeaProjects\\Dialog\\src\\assets\\fonts\\IBMPlexMono-Text.ttf") );
+            font1 = Font.createFont( Font.TRUETYPE_FONT, new FileInputStream("C:\\Users\\damis\\Documents\\GitHub\\SMTPproject\\Dialog\\src\\assets\\fonts\\IBMPlexMono-Text.ttf") );
             font1 = font1.deriveFont(Font.PLAIN, 10);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
