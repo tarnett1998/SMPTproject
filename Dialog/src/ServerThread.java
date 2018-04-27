@@ -9,6 +9,8 @@ public class ServerThread extends Thread {
 
     private Socket clientSocket = null;
 
+    int ccon = 0;
+
     ServerThread(JTextArea log) {
         this.log = log;
     }
@@ -22,6 +24,7 @@ public class ServerThread extends Thread {
                     clientSocket = servSock.accept();
                     ClientThread cthread = new ClientThread(clientSocket, log);
                     cthread.start();
+                    ccon = cthread.ccon;
                 } catch(Exception e) {return;}
             }
         } catch (Exception ioe) {

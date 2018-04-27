@@ -12,31 +12,39 @@ public class ClientThread extends Thread {
     private static String OK_CODE = "250";
     private static String DATA_HANDLER = "354";
 
+    int ccon = 0;
+
 
     ClientThread(Socket clientSocket, JTextArea log) {
         this.clientSocket = clientSocket;
         this.log = log;
-        ClientID = (this.clientSocket.getInetAddress().getHostAddress() + ":" + this.clientSocket.getPort());
+
         dos = null;
         dis = null;
     }
 
     public synchronized void run() {
         try {
-            dos = new DataOutputStream(clientSocket.getOutputStream());
-            dis = new DataInputStream(clientSocket.getInputStream());
-            BufferedReader br = new BufferedReader(new InputStreamReader(dis));
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(dos));
+            ccon += 1;
+            BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+            ClientID = (this.clientSocket.getInetAddress().getHostAddress() + ":" + this.clientSocket.getPort());
+            System.out.println("Shit1");
             log.append("Connection Established w/Client: " + ClientID + "\n");
             while(true) {
                 try {
                     String str = br.readLine();
                     log.append("<" + ClientID + "> Command: " + str + "\n");
+                    System.out.println("Shit2");
                     switch (str) {
                         case "HELO":
                             bw.write("Helo " + ClientID + "! Nice to meet you!");
+                            bw.newLine();
+                            System.out.println("Shit3");
                             bw.flush();
+                            System.out.println("Shit4");
                             log.append("Server: Helo " + ClientID + "! Nice to meet you!\n");
+                            System.out.println("Shit5");
                             break;
                         case "FROM":
                             bw.write("OK");
@@ -48,6 +56,7 @@ public class ClientThread extends Thread {
                             bw.flush();
                             String recep = br.readLine();
                             log.append("SERVER: Message to: " + recep + "\n");
+                            break;
                         case "DATA":
                             bw.write("End data with <CR><LF>.<CR><LF>");
                             bw.flush();
@@ -59,8 +68,8 @@ public class ClientThread extends Thread {
                             }
                             break;
                         default:
-                            dos.writeUTF("ERROR: Unrecognized Command: " + str);
-                            dos.flush();
+                            bw.write("ERROR: Unrecognized Command: " + str);
+                            bw.flush();
                             break;
                     }
                 } catch(Exception e) {break;}
