@@ -9,24 +9,25 @@ public class ServerThread extends Thread {
 
     private Socket clientSocket = null;
 
-    int ccon = 0;
+    private int ccon;
 
-    ServerThread(JTextArea log) {
+    ServerThread(JTextArea log, int ccon) {
         this.log = log;
+        this.ccon = ccon;
     }
 
     public synchronized void run() {
         try {
             servSock = new ServerSocket(42069);
             clientSocket = null;
-            for(;;) {
+            for(;;)
                 try {
                     clientSocket = servSock.accept();
-                    ClientThread cthread = new ClientThread(clientSocket, log);
+                    ClientThread cthread = new ClientThread(clientSocket, log, ccon);
                     cthread.start();
-                    ccon = cthread.ccon;
-                } catch(Exception e) {return;}
-            }
+                } catch (Exception e) {
+                    return;
+                }
         } catch (Exception ioe) {
             if (ioe.toString().contains("socket closed")) {
                 return;

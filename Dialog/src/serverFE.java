@@ -70,12 +70,13 @@ public class serverFE extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent ae) {
+        int ccon = 0;
         switch(ae.getActionCommand()) {
             case "Start":
-                sthread = new ServerThread(log);
+                sthread = new ServerThread(log, ccon);
                 sthread.start();
                 initiate.setText("Stop");
-                jtfcc.setText("" + sthread.ccon);
+                jtfcc.setText("" + ccon);
                 break;
 
             case "Stop":
