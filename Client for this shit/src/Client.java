@@ -96,9 +96,9 @@ public class Client extends JFrame implements ActionListener{
 
       //4 rows by 2 columns
       jpTop.add(jpServer);  jpTop.add(new JPanel());
-      jpTop.add(jpTo);      //jpTop.add(jpToR);
-      jpTop.add(jpFrom);    //jpTop.add(jpFromR);
-      jpTop.add(jpSubject); //jpTop.add(jpSubjectR);
+      jpTop.add(jpTo);      jpTop.add(jpToR);
+      jpTop.add(jpFrom);    jpTop.add(jpFromR);
+      jpTop.add(jpSubject); jpTop.add(jpSubjectR);
 
       JPanel jpCenter = new JPanel();
       jpCenter.setLayout(new GridLayout(1,2));
@@ -155,19 +155,14 @@ public class Client extends JFrame implements ActionListener{
                System.out.println("got here");
 
                //write out login info
-               out.write(jtfUsername.getText()+ "\n");
-               out.flush();
-               jtaMessageR.append(in.readLine() + "\n");
-               //read a 250
-               out.write(jtfPassword.getText() + "\n"); // working on an encryption for this as just handing out the password doesn't seem secure. Expect something by wednesday.
-               out.flush();
+               //out.write("USR:" + jtfUsername.getText() + ":" + jtfPassword.getText() + "\n"); // working on an encryption for this as just handing out the password doesn't seem secure. Expect something by wednesday.
+               //out.flush();
 
                //read a 220
                jtaMessageR.append(in.readLine() + "\n");
 
                //write HELO command
-               //out.write("HELO relay.arnett_client.org" + "\n");
-               out.write("HELO" + "\n");
+               out.write("HELO relay.arnett_client.org" + "\n");
                out.flush();
                System.out.println("HELO relay");
 
@@ -175,40 +170,28 @@ public class Client extends JFrame implements ActionListener{
                jtaMessageR.append(in.readLine() + "\n");
 
                //write from
-               //out.write("FROM: <" + msg.getFrom() + ">" + "\n");
-               out.write("FROM"+"\n");
+               out.write("MAIL FROM: <" + msg.getFrom() + ">" + "\n");
                out.flush();
-               out.write(msg.getFrom()+"\n");
-               out.flush();
-               System.out.println("FROM: <" + msg.getFrom() + ">");
+               System.out.println("MAIL FROM: <" + msg.getFrom() + ">");
 
 
                //get 250
                jtaMessageR.append(in.readLine() + "\n");
 
                //to who, EVERYONE IN CC ARRAY
-               
-               out.write("TO"+"\n");
-               out.flush();
-               out.write(msg.getTo()+"\n");
-               out.flush();
-               jtaMessageR.append(in.readLine() + "\n");
-               
-//                for(int i = 0; i < msg.cc.size(); i++){
-//                   String rcpt = "TO <" + msg.cc.get(i) + ">";
-//                   out.write(rcpt + "\n");
-//                   out.flush();
-//                   System.out.println(rcpt);
-// 
-//                   jtaMessageR.append(in.readLine() + "\n");
-//                }
+               for(int i = 0; i < msg.cc.size; i++){
+                  String rcpt = "RCPT TO: <" + msg.cc.get(i) + ">";
+                  out.write(rcpt + "\n");
+                  out.flush();
+                  System.out.println(rcpt);
+
+                  jtaMessageR.append(in.readLine() + "\n");
+               }
 
                //write data command
                out.write("DATA" + "\n");
                out.flush();
                System.out.println("DATA");
-               
-               
 
                //get 354
                jtaMessageR.append(in.readLine() + "\n");
