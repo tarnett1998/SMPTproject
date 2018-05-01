@@ -157,8 +157,10 @@ public class Client extends JFrame implements ActionListener{
                //write out login info
                out.write(jtfUsername.getText()+ "\n");
                out.flush();
+
                jtaMessageR.append(in.readLine() + "\n");
                //read a 250
+
                out.write(jtfPassword.getText() + "\n"); // working on an encryption for this as just handing out the password doesn't seem secure. Expect something by wednesday.
                out.flush();
 
@@ -166,33 +168,35 @@ public class Client extends JFrame implements ActionListener{
                jtaMessageR.append(in.readLine() + "\n");
 
                //write HELO command
-               //out.write("HELO relay.arnett_client.org" + "\n");
-               out.write("HELO" + "\n");
+               out.write("HELO relay.group_three.org" + "\n");
                out.flush();
-               System.out.println("HELO relay");
+               System.out.println("HELO relay.group_three.org");
 
                //get 250
                jtaMessageR.append(in.readLine() + "\n");
 
                //write from
-               //out.write("FROM: <" + msg.getFrom() + ">" + "\n");
-               out.write("FROM"+"\n");
-               out.flush();
-               out.write(msg.getFrom()+"\n");
+               out.write("FROM " + msg.getFrom() + "\n");
                out.flush();
                System.out.println("FROM: <" + msg.getFrom() + ">");
-
 
                //get 250
                jtaMessageR.append(in.readLine() + "\n");
 
                //to who, EVERYONE IN CC ARRAY
                
-               out.write("TO"+"\n");
+               out.write("TO "+msg.getTo()+"\n");
                out.flush();
-               out.write(msg.getTo()+"\n");
-               out.flush();
+
+               //get 250
                jtaMessageR.append(in.readLine() + "\n");
+
+
+               out.write("DATA");
+               jtaMessageR.append(in.readLine() + "\n");
+
+               //format the msg
+
                
 //                for(int i = 0; i < msg.cc.size(); i++){
 //                   String rcpt = "TO <" + msg.cc.get(i) + ">";
@@ -203,12 +207,8 @@ public class Client extends JFrame implements ActionListener{
 //                   jtaMessageR.append(in.readLine() + "\n");
 //                }
 
-               //write data command
-               out.write("DATA" + "\n");
-               out.flush();
-               System.out.println("DATA");
                
-               
+               ////////////////////////
 
                //get 354
                jtaMessageR.append(in.readLine() + "\n");
