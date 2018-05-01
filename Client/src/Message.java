@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -9,10 +10,11 @@ private String from = "null1";
 private String subject = "null1";
 private String message = "null1";
 private String ip = "null1";
+private LocalDateTime ldt = LocalDateTime.now();
 
     ArrayList<String> cc = new ArrayList<String>();
 
-    public Message(String to_, String from_, String subject_, String message_, String ip_) {
+    Message(String to_, String from_, String subject_, String message_, String ip_) {
     to = to_;
     from = from_;
     subject = subject_;
@@ -41,7 +43,13 @@ private String ip = "null1";
     }
 
     ArrayList<String> formatMessage() {
-
-        return null;
+        ArrayList<String> formatMessage = new ArrayList<>();
+        formatMessage.add(from);
+        formatMessage.add(to);
+        formatMessage.add(""+ldt);
+        formatMessage.add(subject);
+        formatMessage.add(message);
+        formatMessage.add(".");
+        return formatMessage;
     }
 }

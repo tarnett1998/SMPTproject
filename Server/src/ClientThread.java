@@ -59,15 +59,15 @@ public class ClientThread extends Thread {
                     bw.flush();
                     log.append("<" + clientID + "> Sender set to: " + to+"\n");
                 }
-                if (str.substring(0, 4).equals("DATA")) {
+                if (str.equals("DATA")) {
                     bw.write("354 End data with <CR><LF>.<CR><LF>" + "\n");
                     bw.flush();
-                    String data = "";
                     while (true) {
-                        try {
-                            data += br.readLine() + "\n";
-                        } catch (Exception e) {
-                            bw.write("250: Queued as: null");
+                        String data = br.readLine();
+                        if(!data.equals('.')){
+                            log.append(data+"\n");
+                        } else {
+                            bw.write("END"+"\n");
                             break;
                         }
                     }
