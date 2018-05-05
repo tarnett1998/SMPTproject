@@ -140,7 +140,7 @@ public class Client extends JFrame implements ActionListener{
       if(msg.isValid()){
 
          //search message for period on own line
-         msg.parseMessage();
+         //msg.parseMessage();
 
 
             System.out.println("--Valid--");
@@ -170,7 +170,7 @@ public class Client extends JFrame implements ActionListener{
                //write HELO command
                out.write("HELO relay.group_three.org" + "\n");
                out.flush();
-               System.out.println("HELO relay.group_three.org");
+               //System.out.println("HELO relay.group_three.org");
 
                //get 250
                jtaMessageR.append(in.readLine() + "\n");
@@ -178,7 +178,7 @@ public class Client extends JFrame implements ActionListener{
                //write from
                out.write("FROM " + msg.getFrom() + "\n");
                out.flush();
-               System.out.println("FROM: <" + msg.getFrom() + ">");
+               //System.out.println("FROM: <" + msg.getFrom() + ">");
 
                //get 250
                jtaMessageR.append(in.readLine() + "\n");
@@ -192,8 +192,15 @@ public class Client extends JFrame implements ActionListener{
                jtaMessageR.append(in.readLine() + "\n");
 
 
-               out.write("DATA");
+               out.write("DATA"+"\n");
+               out.flush();
                jtaMessageR.append(in.readLine() + "\n");
+               jtaMessageR.setVisible(true);
+
+               for(int i =0 ; i < msg.formatMessage().size(); i++) {
+                    out.write(msg.formatMessage().get(i)+"\n");
+                    out.flush();
+               }
 
                //format the msg
 
@@ -215,23 +222,21 @@ public class Client extends JFrame implements ActionListener{
 
                System.out.println("Message sent to server");
                //from etc.
-               ArrayList<String> arr = msg.formatMessage();
-               for(String x : arr){
-
-                  //write the headers
-                  out.write(x + "\n");
-                  out.flush();
-
-
-                  System.out.println(x);
-               }
-               System.out.println("End message sent to server");
+//               ArrayList<String> arr = msg.formatMessage();
+//               for(String x : arr){
+//
+//                  //write the headers
+//                  out.write(x + "\n");
+//                  out.flush();
+//
+//
+//                  System.out.println(x);
+//               }
+               //System.out.println("End message sent to server");
                //end data
-               out.write("." + "\n");
-               out.flush();
 
                //read 250
-               jtaMessageR.append(in.readLine() + "\n");
+               //jtaMessageR.append(in.readLine() + "\n");
 
                //send quit
                out.write("QUIT" + "\n");
